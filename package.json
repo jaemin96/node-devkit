@@ -1,6 +1,7 @@
 {
-  "name": "monorepo-template",
+  "name": "node-devkit",
   "private": true,
+  "license": "MIT",
   "packageManager": "pnpm@10.17.1",
   "scripts": {
     "dev": "turbo run dev --parallel",
