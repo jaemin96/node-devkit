@@ -1,0 +1,31 @@
+{
+  "name": "monorepo-template",
+  "private": true,
+  "packageManager": "pnpm@10.17.1",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "format": "turbo run format",
+    "graph:turbo": "node dot/scripts/gen-turbo-graph.js",
+    "graph:merge": "node dot/scripts/merge-graph.js",
+    "graph": "pnpm run graph:turbo && pnpm run graph:merge"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "turbo": "latest",
+    "typescript": "^5.6.2",
+    "ts-node": "^10.9.2",
+    "eslint": "^9.14.0",
+    "prettier": "^3.2.5",
+    "@types/node": "^24.10.1",
+    "@types/react": "19.x",
+    "@types/react-dom": "19.x",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "@typescript-eslint/parser": "^8.8.1"
+  }
+}

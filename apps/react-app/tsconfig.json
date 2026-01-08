@@ -1,0 +1,10 @@
+{
+  "extends": "@jaemdev/tsconfig/react",
+  "include": ["src"],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
