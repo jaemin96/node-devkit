@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  # React App - Development
+  react-app-dev:
+    build:
+      context: .
+      dockerfile: apps/react-app/Dockerfile
+      target: dev
+    container_name: react-app-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      # Mount source for hot reload
+      - ./apps/react-app/src:/app/apps/react-app/src
+      - ./apps/react-app/public:/app/apps/react-app/public
+      - ./packages:/app/packages
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+    networks:
+      - devkit-network
+
+  # React App - Production
+  react-app-prod:
+    build:
+      context: .
+      dockerfile: apps/react-app/Dockerfile
+      target: prod
+    container_name: react-app-prod
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    networks:
+      - devkit-network
+
+networks:
+  devkit-network:
+    driver: bridge
