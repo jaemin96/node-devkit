@@ -12,7 +12,7 @@ function App() {
         timeWindowMs: 1000,
         maxExecutions: 50,
       }}
-      devOnly={true}
+      devOnly={false}
     >
       <LoopAlert position="top-right" maxVisible={3} />
 

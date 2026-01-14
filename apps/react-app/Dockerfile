@@ -2,16 +2,21 @@
 # It only includes the dependencies needed for this specific app
 
 FROM node:22.13.1-alpine AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+
+# Install pnpm directly using npm (bypassing corepack)
+RUN npm install -g pnpm@10.17.1 turbo@latest
+
 WORKDIR /app
 
 # Pruner stage - extract only what this app needs
 FROM base AS pruner
 RUN apk add --no-cache libc6-compat
+
+# Copy all source files
 COPY . .
-RUN pnpm turbo prune react-app --docker
+
+# Run turbo prune
+RUN turbo prune react-app --docker
 
 # Installer stage - install dependencies
 FROM base AS installer
@@ -22,13 +27,13 @@ COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 
 # Install dependencies
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
 
 # Copy pruned source code
 COPY --from=pruner /app/out/full/ .
 
 # Build the app
-RUN pnpm turbo run build --filter=react-app
+RUN turbo run build --filter=react-app
 
 # Development stage
 FROM base AS dev
@@ -36,7 +41,7 @@ RUN apk add --no-cache libc6-compat
 
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
 
 COPY --from=pruner /app/out/full/ .
 

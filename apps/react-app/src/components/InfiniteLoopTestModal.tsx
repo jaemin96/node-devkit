@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { loopDetector, renderMonitor } from "@repo/react-loop-guard";
+import { loopDetector, renderMonitor } from "@devkit/react-loop-guard";
 import {
   Dialog,
   DialogContent,

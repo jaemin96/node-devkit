@@ -15,6 +15,9 @@ services:
       - ./apps/react-app/src:/app/apps/react-app/src
       - ./apps/react-app/public:/app/apps/react-app/public
       - ./packages:/app/packages
+      # Protect node_modules in packages from being overwritten
+      - /app/packages/utils/node_modules
+      - /app/packages/react-loop-guard/node_modules
     environment:
       - NODE_ENV=development
     stdin_open: true
